@@ -1,5 +1,0 @@
-/Users/Vlad/Documents/Study/NULP/Course_2/Курсова/GadgetApp/GadgetApp/bin/Release/net9.0/win-x64/publish/GadgetApp.pdb
-/Users/Vlad/Documents/Study/NULP/Course_2/Курсова/GadgetApp/GadgetApp/bin/Release/net9.0/win-x64/publish/av_libglesv2.dll
-/Users/Vlad/Documents/Study/NULP/Course_2/Курсова/GadgetApp/GadgetApp/bin/Release/net9.0/win-x64/publish/libHarfBuzzSharp.dll
-/Users/Vlad/Documents/Study/NULP/Course_2/Курсова/GadgetApp/GadgetApp/bin/Release/net9.0/win-x64/publish/libSkiaSharp.dll
-/Users/Vlad/Documents/Study/NULP/Course_2/Курсова/GadgetApp/GadgetApp/bin/Release/net9.0/win-x64/publish/GadgetApp.exe
