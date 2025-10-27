@@ -1,0 +1,111 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:GadgetApp.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="700"
+        x:Class="GadgetApp.Views.AddEditGadgetWindow"
+        x:DataType="vm:AddEditGadgetViewModel"
+        Title="{Binding Title}"
+        Width="500" Height="700"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E">
+
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Margin" Value="0,5,0,2"/>
+        </Style>
+
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#505050"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="5,0,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#505050"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#505050"/>
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+        </Style>
+
+        <Style Selector="TextBlock.error">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+    </Window.Styles>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20" Spacing="5">
+            <!-- Назва -->
+            <TextBlock Text="Назва:"/>
+            <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding NameError}" Classes="error"/>
+
+            <!-- Виробник -->
+            <TextBlock Text="Виробник:"/>
+            <TextBox Text="{Binding Manufacturer, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding ManufacturerError}" Classes="error"/>
+
+            <!-- Ціна -->
+            <TextBlock Text="Ціна ($):"/>
+            <TextBox Text="{Binding PriceText, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding PriceError}" Classes="error"/>
+
+            <!-- Тип -->
+            <TextBlock Text="Тип:"/>
+            <ComboBox ItemsSource="{Binding GadgetTypes}" SelectedItem="{Binding Type, Mode=TwoWay}"/>
+
+            <!-- Відступ між Тип і Розмір екрану -->
+            <Border Height="10" Background="Transparent"/>
+
+            <!-- Розмір екрану -->
+            <TextBlock Text="Розмір екрану:"/>
+            <TextBox Text="{Binding ScreenSize, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding ScreenSizeError}" Classes="error"/>
+
+            <!-- Відступ перед додатковими функціями -->
+            <Border Height="10" Background="Transparent"/>
+            <TextBlock Text="Додаткові функції:"/>
+            <StackPanel Spacing="5">
+                <CheckBox IsChecked="{Binding HasCamera}">Камера</CheckBox>
+                <CheckBox IsChecked="{Binding HasGPS}">GPS</CheckBox>
+                <CheckBox IsChecked="{Binding HasPulseMeter}">Вимірювач пульсу</CheckBox>
+            </StackPanel>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15" Margin="0,20,0,0">
+                <Button Name="SaveButton" Content="Зберегти" Width="130"/>
+                <Button Name="CancelButton" Content="Скасувати" Width="130"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

@@ -1,0 +1,206 @@
+<!-- 
+    Головне вікно програми.
+    Використовує Grid з двома колонками для основного контенту та бічної панелі.
+-->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:GadgetApp.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="GadgetApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Керування Гаджетами"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E">
+
+    <!-- 
+        Глобальні стилі для всього вікна.
+        Визначають зовнішній вигляд кнопок, текстових полів, меню тощо.
+    -->
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#505050"/>
+        </Style>
+        <!-- Спеціальний стиль для кнопки "Видалити" при наведенні -->
+        <Style Selector="#DeleteButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#8B0000"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#505050"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="CaretBrush" Value="#E0E0E0"/>
+        </Style>
+        <Style Selector="TextBox.error">
+            <Setter Property="BorderBrush" Value="Red"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+        <Style Selector="TextBlock.ValidationError">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,2,0,5"/>
+        </Style>
+         <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#3C3C3C"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#505050"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        <Style Selector="Menu">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="MenuItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+        </Style>
+    </Window.Styles>
+
+    <!-- Встановлюємо ViewModel як контекст даних для цього вікна -->
+    <Window.DataContext>
+      <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid ColumnDefinitions="*, 350" RowDefinitions="Auto, *" Margin="15">
+        
+        <!-- Головне меню програми -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Menu Margin="0,0,0,10">
+                <MenuItem Header="Файл">
+                    <MenuItem Header="Завантажити з .csv" Command="{Binding LoadFromFileCommand}"/>
+                    <MenuItem Header="Зберегти" Command="{Binding SaveCommand}"/>
+                    <MenuItem Header="Зберегти як..." Command="{Binding SaveAsCommand}"/>
+                </MenuItem>
+                <MenuItem Header="Редагування">
+                    <MenuItem Header="Додати гаджет" Command="{Binding AddGadgetCommand}"/>
+                    <MenuItem Header="Редагувати обраний" Command="{Binding EditGadgetCommand}"/>
+                    <MenuItem Header="Видалити обраний" Command="{Binding DeleteGadgetCommand}"/>
+                </MenuItem>
+                <!-- Меню "Перегляд" видиме лише тоді, коли в таблиці є дані -->
+                <MenuItem Header="Перегляд" IsVisible="{Binding HasData}">
+                    <!-- Текст цього пункту динамічно змінюється (Приховати/Показати) -->
+                    <MenuItem Header="{Binding ToggleFiltersMenuText}" Command="{Binding ToggleFilterPanelCommand}"/>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+
+        <!-- Основна частина з таблицею та кнопками -->
+        <!-- Grid.ColumnSpan динамічно змінюється, щоб таблиця займала весь простір, коли панель фільтрів прихована -->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="{Binding MainGridColumnSpan}" RowDefinitions="*, Auto">
+            
+            <!-- Таблиця для відображення гаджетів -->
+            <DataGrid Grid.Row="0" Name="GadgetsGrid"
+                      SelectedItem="{Binding SelectedGadget}"
+                      ItemsSource="{Binding Gadgets}" CanUserSortColumns="True"
+                      IsReadOnly="True" AutoGenerateColumns="False"
+                      Background="#2D2D2D" BorderThickness="0" CornerRadius="4"
+                      GridLinesVisibility="None" Foreground="#E0E0E0">
+                <!-- Контекстне меню, що з'являється при натисканні правою кнопкою миші на рядок -->
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Редагувати обраний" Command="{Binding EditGadgetCommand}"/>
+                        <MenuItem Header="Видалити обраний" Command="{Binding DeleteGadgetCommand}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Styles>
+                    <Style Selector="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#383838"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                    <!-- Стилі для чергування кольорів рядків -->
+                    <Style Selector="DataGridRow:nth-child(odd)">
+                        <Setter Property="Background" Value="#2D2D2D"/>
+                    </Style>
+                    <Style Selector="DataGridRow:nth-child(even)">
+                        <Setter Property="Background" Value="#333333"/>
+                    </Style>
+                     <Style Selector="DataGridRow:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#0078D7" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+                </DataGrid.Styles>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Назва" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Виробник" Binding="{Binding Manufacturer}" Width="*"/>
+                    <DataGridTextColumn Header="Ціна ($)" Binding="{Binding Price, StringFormat={}{0:F2}}" Width="100"/>
+                    <DataGridTextColumn Header="Тип" Binding="{Binding Type}" Width="120"/>
+                    <DataGridTextColumn Header="Розмір екрану" Binding="{Binding ScreenSize}" Width="150"/>
+                    <DataGridTextColumn Header="Додаткові функції" Binding="{Binding FeaturesString}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Панель з основними кнопками дій -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="10" Margin="0,15,0,0">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Додати" Command="{Binding AddGadgetCommand}" Width="120" Height="40" ToolTip.Tip="Відкрити вікно для додавання нового гаджета"/>
+                    <Button Content="Редагувати" Command="{Binding EditGadgetCommand}" Width="120" Height="40" ToolTip.Tip="Редагувати обраний у таблиці гаджет"/>
+                    
+                    <Button Name="DeleteButton" Content="Видалити" Command="{Binding DeleteGadgetCommand}" Width="120" Height="40" Background="Brown" ToolTip.Tip="Видалити обраний гаджет зі списку"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Завантажити з .csv" Command="{Binding LoadFromFileCommand}" Width="250" Height="40" ToolTip.Tip="Завантажити список гаджетів з файлу .csv"/>
+                    <Button Content="Зберегти" Command="{Binding SaveCommand}" Width="160" Height="40" ToolTip.Tip="Зберегти зміни в поточний файл"/>
+                    <Button Content="Зберегти як..." Command="{Binding SaveAsCommand}" Width="160" Height="40" ToolTip.Tip="Зберегти поточний список гаджетів у новий файл .csv"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        
+        <!-- 
+            Панель фільтрів.
+            Її видимість контролюється властивістю ShowFilterPanel у ViewModel.
+        -->
+        <Border Grid.Row="1" Grid.Column="1" Background="Transparent" Padding="15,0,0,0" Margin="15,0,0,0"
+                IsVisible="{Binding ShowFilterPanel}">
+             <StackPanel Spacing="2">
+                <TextBlock Text="Фільтрація та Пошук" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="Пошук за назвою:"/>
+                <TextBox Watermark="Введіть назву..." Text="{Binding SearchText, Mode=TwoWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5"/>
+                <TextBlock Text="Компанія-виробник:" Margin="0,10,0,0"/>
+                <ComboBox ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding SelectedManufacturer}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5"/>
+                <TextBlock Text="Тип гаджету:" Margin="0,10,0,0"/>
+                <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedType}" PlaceholderText="Всі типи" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5"/>
+                
+                <TextBlock Text="Ціна:" Margin="0,10,0,0"/>
+                <Grid ColumnDefinitions="*,Auto,*">
+                    <TextBox Grid.Column="0" Watermark="Від" Text="{Binding MinPriceText, Mode=TwoWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5"
+                             Classes.error="{Binding !!MinPriceError}"/>
+                    <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" Margin="5,0"/>
+                    <TextBox Grid.Column="2" Watermark="До" Text="{Binding MaxPriceText, Mode=TwoWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5"
+                             Classes.error="{Binding !!MaxPriceError}"/>
+                </Grid>
+                <TextBlock Classes="ValidationError" Text="{Binding MinPriceError}"/>
+                <TextBlock Classes="ValidationError" Text="{Binding MaxPriceError}"/>
+                
+                <TextBlock Text="Розмір екрану (ШхВ):" Margin="0,10,0,0"/>
+                 <Grid ColumnDefinitions="*,Auto,*">
+                    <TextBox Grid.Column="0" Watermark="Від (напр. 1000x2000)" Text="{Binding MinScreenSize, Mode=TwoWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5" IsEnabled="True"
+                             Classes.error="{Binding !!MinScreenSizeError}"/>
+                    <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" Margin="5,0"/>
+                    <TextBox Grid.Column="2" Watermark="До (напр. 1500x3000)" Text="{Binding MaxScreenSize, Mode=TwoWay}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Padding="5" IsEnabled="True"
+                             Classes.error="{Binding !!MaxScreenSizeError}"/>
+                </Grid>
+                <TextBlock Classes="ValidationError" Text="{Binding MinScreenSizeError}"/>
+                <TextBlock Classes="ValidationError" Text="{Binding MaxScreenSizeError}"/>
+                 
+                <Button Content="Скинути фільтри" Command="{Binding ResetFiltersCommand}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,20,0,0" Height="40"/>
+                <Button Content="Сортувати за ціною (Quick Sort)" Command="{Binding SortByPriceCommand}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,20,0,0" Height="40"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
+

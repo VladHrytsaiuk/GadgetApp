@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.3.7" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.7" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.5" />
+        <PackageReference Include="Avalonia.Native" Version="11.3.7" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.5" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.5" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.5">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+        <Compile Update="Views\MainWindow.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\AddEditGadgetWindow.axaml.cs">
+            <DependentUpon>AddEditGadgetWindow.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\MessageBox.axaml.cs">
+            <DependentUpon>MessageBox.axaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\ConfirmDialog.axaml.cs">
+          <DependentUpon>ConfirmDialog.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Remove="Exceptions\**" />
+        <Compile Update="Views\SaveChangesDialog.axaml.cs">
+          <DependentUpon>SaveChangesDialog.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Remove="Back-ups\**" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+      <AvaloniaXaml Remove="Exceptions\**" />
+      <AvaloniaXaml Remove="Back-ups\**" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Exceptions\**" />
+      <EmbeddedResource Remove="Back-ups\**" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+      <AdditionalFiles Remove="Exceptions\**" />
+      <AdditionalFiles Remove="Back-ups\**" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+      <AvaloniaResource Remove="Exceptions\**" />
+      <AvaloniaResource Remove="Back-ups\**" />
+    </ItemGroup>
+
+   
+
+    <ItemGroup>
+      <None Remove="Exceptions\**" />
+      <None Remove="Back-ups\**" />
+    </ItemGroup>
+</Project>
+

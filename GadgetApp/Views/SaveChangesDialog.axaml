@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="150"
+        x:Class="GadgetApp.Views.SaveChangesDialog"
+        Title="Зберегти зміни?"
+        CanResize="False"
+        SizeToContent="Height"
+        Width="400"
+        WindowStartupLocation="CenterOwner"
+        Background="#2D2D2D">
+
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.accent">
+             <Setter Property="Background" Value="#0078D7"/>
+        </Style>
+         <Style Selector="Button.default">
+             <Setter Property="Background" Value="#3C3C3C"/>
+        </Style>
+         <Style Selector="Button.destructive">
+             <Setter Property="Background" Value="#A04040"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#505050"/>
+        </Style>
+         <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1088E7"/>
+        </Style>
+         <Style Selector="Button.destructive:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B05050"/>
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Margin="20" Spacing="15">
+        <TextBlock Text="Ви внесли зміни. Бажаєте зберегти їх перед виходом?"
+                   FontSize="16"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+            <Button Name="SaveButton" Content="Зберегти" Width="100" Classes="accent"/>
+            <Button Name="DontSaveButton" Content="Не зберігати" Width="110" Classes="destructive"/>
+            <Button Name="CancelButton" Content="Скасувати" Width="100" Classes="default"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

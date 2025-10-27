@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:GadgetApp.Views"
+        x:Class="GadgetApp.Views.ConfirmDialog"
+        x:DataType="local:ConfirmDialog"
+
+        Width="400" Height="140"
+        Background="#2D2D2D"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False">
+    
+    <Window.Styles>
+        
+        <Style Selector="#DeleteButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#8B0000"/> <!-- темніше від Brown -->
+        </Style>
+        </Window.Styles>
+
+    <StackPanel Margin="20" Spacing="20">
+        <TextBlock Text="{Binding Message}" 
+                   FontSize="16" 
+                   Width="350"
+                   Foreground="White" 
+                   TextWrapping="Wrap" 
+                   TextAlignment="Center"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+            <Button Content="Видалити" 
+                    Width="180" Height="50" 
+                    Background="Brown" 
+                    FontWeight="Bold"
+                    Command="{Binding YesCommand}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    CornerRadius="6"
+                    x:Name="DeleteButton"/>
+            
+            <Button Content="Скасувати" 
+                    Width="150" Height="50" 
+                    
+                    Command="{Binding NoCommand}"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    CornerRadius="6"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
